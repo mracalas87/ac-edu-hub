@@ -79,7 +79,7 @@
     var grid = el("ul", { class: "grid category-grid", role: "list" });
     window.CATEGORIES.forEach(function (cat) {
       var count = gamesIn(cat.id).length;
-      var countText = count === 1 ? "1 game" : count + " games";
+      var countText = count === 1 ? "1 platform" : count + " platforms";
       var link = el("a", {
         class: "category-card",
         href: "#" + cat.id,
