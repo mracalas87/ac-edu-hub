@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0f1f">
+  <title>AC Edu Engagement</title>
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <meta name="description" content="Learning games for children: maths, spelling, computational thinking, STEM and financial literacy.">
+  <style>
+    :root {
+      --bg: #0a0f1f;
+      --ink: #f8fafc;
+      --muted: #cbd5e1;
+      --glass: rgba(255, 255, 255, .06);
+      --line: rgba(255, 255, 255, .14);
+      --page-accent: #a78bfa;
+      --radius: 28px;
+      --focus: #fde047;
+    }
+    * { box-sizing: border-box; }
+    html { font-size: 112.5%; }
+    body {
+      margin: 0; min-height: 100vh;
+      font-family: "Avenir Next", "SF Pro Display", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Soft glowing background */
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(700px 420px at 12% -5%, rgba(99, 102, 241, .45), transparent 70%),
+        radial-gradient(640px 400px at 92% 8%, rgba(236, 72, 153, .30), transparent 70%),
+        radial-gradient(800px 500px at 50% 110%, rgba(14, 165, 233, .28), transparent 70%);
+    }
+    .skip {
+      position: absolute; left: 1rem; top: -4rem; z-index: 10;
+      background: #fff; color: #0a0f1f; font-weight: 800;
+      padding: .75rem 1rem; border-radius: 12px;
+    }
+    .skip:focus { top: 1rem; }
+
+    /* Slim header (hidden on the home page, where the hero carries the title) */
+    header.site {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(10, 15, 31, .6);
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    }
+    body[data-page="home"] header.site { display: none; }
+    header.site a {
+      color: var(--ink); text-decoration: none; font-weight: 800; letter-spacing: .02em;
+      display: inline-flex; align-items: center; gap: .75rem;
+      padding: .25rem .5rem; border-radius: 12px;
+    }
+    header.site img {
+      width: 44px; height: 44px; border-radius: 50%; flex: none;
+      border: 2px solid rgba(255, 255, 255, .8); background: #fff;
+    }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+    main:focus { outline: none; }
+    h1:focus { outline: none; }
+    h2 { font-size: 1.3rem; margin: 0; line-height: 1.25; }
+    h1 { font-size: 2.4rem; line-height: 1.15; margin: .5rem 0; letter-spacing: -.01em; }
+    .lead { font-size: 1.2rem; color: var(--muted); margin: 0 0 1.75rem; }
+
+    /* Home hero and wordmark */
+    .hero { text-align: center; padding: 2.5rem 0 2.25rem; }
+    .hero-logo {
+      width: 120px; height: 120px; border-radius: 50%; background: #fff;
+      border: 4px solid rgba(255, 255, 255, .9);
+      box-shadow: 0 0 0 10px rgba(255, 255, 255, .08), 0 0 70px rgba(124, 58, 237, .55);
+    }
+    .wordmark { margin: 1.25rem 0 .5rem; line-height: 1; }
+    .wordmark .ac {
+      display: block; font-size: clamp(4.5rem, 16vw, 8rem); font-weight: 900;
+      letter-spacing: -.04em; color: #a5b4fc;
+      background: linear-gradient(100deg, #38bdf8 0%, #a78bfa 50%, #f472b6 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .wordmark .rest {
+      display: block; margin-top: .35rem;
+      font-size: clamp(1.1rem, 4.6vw, 2rem); font-weight: 300;
+      letter-spacing: .38em; text-transform: uppercase; color: var(--ink);
+      padding-left: .38em; /* balances the trailing letter-space so the text looks centred */
+    }
+    .hero .lead { margin: 1.25rem auto 0; max-width: 32ch; }
+
+    .grid {
+      list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+    .icon { line-height: 1; }
+    .grid > li > .category-card { height: 100%; }
+
+    /* Subject cards */
+    .category-card {
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end;
+      gap: .4rem; min-height: 230px; padding: 1.5rem;
+      background: var(--glass); border: 1px solid var(--line); border-radius: var(--radius);
+      color: var(--ink); text-decoration: none;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .category-card::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(120% 90% at 0% 0%, var(--accent), transparent 62%);
+      opacity: .30;
+    }
+    .category-card > * { position: relative; }
+    .category-card .icon {
+      font-size: 2.6rem; width: 4.5rem; height: 4.5rem;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 22px; background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .28); margin-bottom: auto;
+    }
+    .category-card .card-title { font-size: 1.55rem; font-weight: 800; letter-spacing: -.01em; }
+    .category-card .card-blurb { font-size: 1rem; color: var(--muted); }
+    .pill {
+      margin-top: .35rem; padding: .2rem .85rem; border-radius: 999px;
+      background: var(--accent); color: #0a0f1f; font-weight: 800; font-size: .9rem;
+    }
+
+    /* Back button */
+    .back {
+      display: inline-flex; align-items: center; gap: .25rem;
+      min-height: 48px; padding: .5rem 1.2rem; margin-bottom: .75rem;
+      background: var(--glass); color: var(--ink); font-weight: 800; text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, .4); border-radius: 999px;
+    }
+
+    /* Category page heading picks up the subject colour */
+    body[data-page="category"] h1 { display: flex; align-items: center; gap: .6rem; }
+    body[data-page="category"] h1 .icon {
+      width: 3.2rem; height: 3.2rem; font-size: 1.9rem; flex: none;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 16px; background: var(--page-accent);
+    }
+
+    /* Game cards */
+    .game-card {
+      display: flex; flex-direction: column; gap: .6rem; height: 100%;
+      background: var(--glass); color: var(--ink);
+      border: 1px solid var(--line); border-top: 4px solid var(--page-accent);
+      border-radius: var(--radius); padding: 1rem; text-decoration: none;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .game-card .card-blurb { margin: 0; color: var(--muted); flex: 1; }
+    .thumb {
+      width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 18px;
+      background: rgba(255, 255, 255, .08);
+    }
+    .thumb-icon {
+      display: flex; align-items: center; justify-content: center; font-size: 4rem;
+      background: radial-gradient(90% 90% at 30% 20%, var(--page-accent), transparent 80%), rgba(255, 255, 255, .06);
+    }
+    .play, .soon {
+      align-self: flex-start; font-weight: 800; padding: .5rem 1.3rem; min-height: 44px;
+      border-radius: 999px; display: inline-flex; align-items: center;
+    }
+    .play { background: var(--page-accent); color: #0a0f1f; }
+    .soon { background: rgba(255, 255, 255, .1); color: var(--muted); }
+    .game-card.disabled { border-top-style: dashed; opacity: .85; }
+
+    a.category-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
+    a.game-card:hover { transform: translateY(-5px); box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
+    a:focus-visible { outline: 4px solid var(--focus); outline-offset: 4px; }
+
+    footer { text-align: center; color: var(--muted); padding: 1.5rem 1.25rem 2.5rem; font-size: .9rem; }
+    footer p { margin: .25rem 0; }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+    @media (max-width: 480px) {
+      h1 { font-size: 1.9rem; }
+      .grid { grid-template-columns: 1fr; }
+      .wordmark .rest { letter-spacing: .24em; padding-left: .24em; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site">
+    <a href="#" class="brand" aria-label="AC Edu Engagement, home">
+      <img src="images/logo.png" alt="" width="44" height="44">
+      <span id="site-name">AC Edu Engagement</span>
+    </a>
+  </header>
+  <main id="main" tabindex="-1">
+    <noscript><p class="lead">This site needs JavaScript to show the games.</p></noscript>
+  </main>
+  <footer>
+    <p>Games open in a new tab. Close the tab to come back here.</p>
+    <p>Created by Andy</p>
+  </footer>
+  <script src="games.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
