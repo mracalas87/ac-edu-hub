@@ -215,6 +215,55 @@
       body[data-page="home"] .category-card .card-title { font-size: .92rem; }
       body[data-page="home"] .pill { font-size: .72rem; }
     }
+    /* ===== Button feel: raised coloured edge that presses down when tapped ===== */
+    .category-card, .game-card:not(.disabled), .back, .sound-toggle {
+      cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+      -webkit-user-select: none; user-select: none;
+    }
+    .category-card {
+      border-color: var(--accent);
+      box-shadow: 0 6px 0 var(--accent), 0 10px 14px rgba(20, 33, 61, .10);
+    }
+    .game-card:not(.disabled) {
+      border-color: var(--page-accent);
+      box-shadow: 0 6px 0 var(--page-accent), 0 10px 14px rgba(20, 33, 61, .10);
+    }
+    a.category-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 var(--accent), 0 12px 16px rgba(20, 33, 61, .12);
+    }
+    a.game-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 var(--page-accent), 0 12px 16px rgba(20, 33, 61, .12);
+    }
+    a.category-card:active {
+      transform: translateY(6px); transition-duration: .04s;
+      box-shadow: 0 0 0 var(--accent), 0 2px 4px rgba(20, 33, 61, .12);
+    }
+    a.game-card:active {
+      transform: translateY(6px); transition-duration: .04s;
+      box-shadow: 0 0 0 var(--page-accent), 0 2px 4px rgba(20, 33, 61, .12);
+    }
+    .back { box-shadow: 0 4px 0 var(--ink); transition: transform .08s ease, box-shadow .08s ease; }
+    .back:active { transform: translateY(4px); box-shadow: 0 0 0 var(--ink); }
+    .play { box-shadow: 0 3px 0 rgba(0, 0, 0, .35); }
+    body[data-page="home"] .grid { gap: .9rem .75rem; }
+
+    /* Sound on/off */
+    .sound-toggle {
+      position: absolute; top: 1rem; left: 1rem; z-index: 5;
+      width: 44px; height: 44px; padding: 0; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #fff; color: var(--ink); border: 2px solid var(--line);
+      box-shadow: 0 3px 0 var(--line); transition: transform .08s ease, box-shadow .08s ease;
+    }
+    .sound-toggle:active { transform: translateY(3px); box-shadow: 0 0 0 var(--line); }
+    .sound-toggle:focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; }
+    .sound-toggle svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+    .sound-toggle .off { display: none; }
+    .sound-toggle[aria-pressed="false"] .on { display: none; }
+    .sound-toggle[aria-pressed="false"] .off { display: block; }
+    body[data-page="category"] .sound-toggle { left: auto; right: 1rem; top: .85rem; }
   </style>
 </head>
 <body>
@@ -229,6 +278,10 @@
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAExAQMAAAD8+w1zAAAABlBMVEX///9ISEhr7AOpAAAC7UlEQVR42u2aQXKjSBBFXwom0A7tZoluUr7JHIXyyaZ8EqMTNI7oiC7PYP4sCjByS2r19KpN/ZUERUbwlVn/Z5YgIyMj4/OiUALytMFJHY3U1+nqCLC7L9J2lp3zJgVcoOmg/p43mZmluGH1+KuZWckW6bVEj18uNz1AJQ0resdCkgnatLDpmh7qWElDsem0nIg7Hi6m5cybPG3AqWt66j7zdgPl+osJudCeXPdSnw71j36Fz0HI4b5l/aV8s1b/mEB6bvXlb317lvo6In1N+ZaWTdzSyrcKTl2Tli03N5ZvpvQlbW8uacOeSgD6Lpp/9PD0cDrCyyFus04/Lnu44xl5WgWcpH6r+9vPuJqh0GiSvCQpuK6ReupINRSX3KDPvK3d4IKumT+d8ybbgRnwaOv8fSvfylzO19MSW9IyuDC1KBGY2M1peaWcR5MAWgVITUqcmPuB7G5ZZYoBQJNGO3WNeohQaBgX3lLJGngePcDpmHq7fQkqs8owuZrV/R0r4lol2tyTNac/FXkt7fbM4f851U/gycuUlpIhS1Ly9FeHeIEq7rOruS3PIyaQhza4zvWNFKnjvAtejtb1QFxvhNuitxiwEUZoIST1AKD6N3KhnMHztJbxssxpeRM2mlDaBV33zq80Zt5uuRpMkuTb4CSl2aAi1XhXtGHcJm/JRE+t3XuzEie/M7sa7cDMZlNjydXsc+/8wdeU56PDqXWWB9p1C7hMtjNvN2c1y8wa6gjVHSdQcbu8rU+gpnruasUqVkvGnUd7TOp8Oh4OxH2q9HJbLvrDsnlM0PdTk8L4Tu88spbkcVIH1D1UyzlVntXMzd06LZeTO1rNQ4c6TcJun0Adtu1qVid3kgI0khRraajGi3XqP2yEA8O2eDuTX1oELjysDI+G8kq0Iyczsz2vVr79scvqfIXU95O7Cc3ia4YiNyl3qLMHF5w6aBSph+szh4dZdiNx+EVp+y1E/NYreJZ/zCyvMJKRkZHxmfEfSCcH0EuWJ8IAAAAASUVORK5CYII=" alt="QR code to open the AC Edu Engagement website on a tablet or phone" width="88" height="88">
     <figcaption>Scan me</figcaption>
   </figure>
+  <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="true" aria-label="Sound effects on. Press to turn off.">
+    <svg class="on" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M4 12h5l6-5v18l-6-5H4z"/><path d="M20 11.5c1.6 1.4 1.6 7.6 0 9M23.5 8c3.6 3.6 3.6 12.4 0 16"/></svg>
+    <svg class="off" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M4 12h5l6-5v18l-6-5H4z"/><path d="M21 12l7 8M28 12l-7 8"/></svg>
+  </button>
   <main id="main" tabindex="-1">
     <noscript><p class="lead">This site needs JavaScript to show the games.</p></noscript>
   </main>

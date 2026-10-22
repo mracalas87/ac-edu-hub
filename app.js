@@ -188,6 +188,70 @@
     firstRender = false;
   }
 
+  // ---- Click sound: a short synthesised pop, no audio file needed ----
+  var AudioCtx = window.AudioContext || window.webkitAudioContext;
+  var audio = null;
+  var soundOn = true;
+  try { soundOn = localStorage.getItem("ac-sound") !== "off"; } catch (e) {}
+
+  function prime() {
+    if (!AudioCtx) return;
+    try {
+      if (!audio) audio = new AudioCtx();
+      if (audio.state === "suspended") audio.resume();
+    } catch (e) {}
+  }
+
+  function playClick() {
+    if (!soundOn || !AudioCtx) return;
+    try {
+      prime();
+      var t = audio.currentTime;
+      var osc = audio.createOscillator();
+      var gain = audio.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(900, t);
+      osc.frequency.exponentialRampToValueAtTime(450, t + 0.07);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.25, t + 0.005);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.11);
+      osc.connect(gain);
+      gain.connect(audio.destination);
+      osc.start(t);
+      osc.stop(t + 0.12);
+    } catch (e) {}
+  }
+
+  var CLICKABLE = ".category-card, .game-card:not(.disabled), .back, header.site a";
+  function isClickable(target) { return target && target.closest && target.closest(CLICKABLE); }
+
+  // Mouse: sound on press. Touch: sound on release, so scrolling stays silent.
+  document.addEventListener("pointerdown", function (e) {
+    if (!isClickable(e.target)) return;
+    if (e.pointerType === "touch") { prime(); } else { playClick(); }
+  });
+  document.addEventListener("pointerup", function (e) {
+    if (e.pointerType === "touch" && isClickable(e.target)) playClick();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && isClickable(e.target)) playClick();
+  });
+
+  var toggle = document.getElementById("sound-toggle");
+  function showSound() {
+    toggle.setAttribute("aria-pressed", soundOn ? "true" : "false");
+    toggle.setAttribute("aria-label", soundOn ? "Sound effects on. Press to turn off." : "Sound effects off. Press to turn on.");
+  }
+  if (toggle) {
+    showSound();
+    toggle.addEventListener("click", function () {
+      soundOn = !soundOn;
+      try { localStorage.setItem("ac-sound", soundOn ? "on" : "off"); } catch (e) {}
+      showSound();
+      if (soundOn) playClick();
+    });
+  }
+
   window.addEventListener("hashchange", render);
   render();
 })();
