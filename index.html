@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0a0f1f">
   <title>AC Edu Engagement</title>
-  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="icon" type="image/png" href="logo.png">
   <meta name="description" content="Learning games for children: maths, spelling, computational thinking, STEM and financial literacy.">
   <style>
     :root {
@@ -67,7 +67,7 @@
     .lead { font-size: 1.2rem; color: var(--muted); margin: 0 0 1.75rem; }
 
     /* Home hero and wordmark */
-    .hero { text-align: center; padding: 2.5rem 0 2.25rem; }
+    .hero { text-align: center; padding: 1.5rem 0 1.75rem; }
     .hero-logo {
       width: 120px; height: 120px; border-radius: 50%; background: #fff;
       border: 4px solid rgba(255, 255, 255, .9);
@@ -89,18 +89,20 @@
     }
     .hero .lead { margin: 1.25rem auto 0; max-width: 32ch; }
 
+    /* Centred, wrapping grid: a short last row sits in the middle */
     .grid {
-      list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      list-style: none; margin: 0; padding: 0;
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;
     }
+    .grid > li { flex: 0 1 300px; display: flex; }
+    .grid > li > a, .grid > li > div { width: 100%; }
     .icon { line-height: 1; }
-    .grid > li > .category-card { height: 100%; }
 
     /* Subject cards */
     .category-card {
       position: relative; overflow: hidden;
-      display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end;
-      gap: .4rem; min-height: 230px; padding: 1.5rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center;
+      gap: .3rem; min-height: 180px; padding: 1.25rem 1rem;
       background: var(--glass); border: 1px solid var(--line); border-radius: var(--radius);
       color: var(--ink); text-decoration: none;
       transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
@@ -112,15 +114,15 @@
     }
     .category-card > * { position: relative; }
     .category-card .icon {
-      font-size: 2.6rem; width: 4.5rem; height: 4.5rem;
+      font-size: 2rem; width: 3.6rem; height: 3.6rem;
       display: flex; align-items: center; justify-content: center;
-      border-radius: 22px; background: rgba(255, 255, 255, .12);
-      border: 1px solid rgba(255, 255, 255, .28); margin-bottom: auto;
+      border-radius: 18px; background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .28); margin-bottom: .35rem;
     }
-    .category-card .card-title { font-size: 1.55rem; font-weight: 800; letter-spacing: -.01em; }
-    .category-card .card-blurb { font-size: 1rem; color: var(--muted); }
+    .category-card .card-title { font-size: 1.3rem; font-weight: 800; letter-spacing: -.01em; line-height: 1.2; }
+    .category-card .card-blurb { font-size: .95rem; color: var(--muted); line-height: 1.35; }
     .pill {
-      margin-top: .35rem; padding: .2rem .85rem; border-radius: 999px;
+      margin-top: .3rem; padding: .2rem .85rem; border-radius: 999px;
       background: var(--accent); color: #0a0f1f; font-weight: 800; font-size: .9rem;
     }
 
@@ -142,15 +144,16 @@
 
     /* Game cards */
     .game-card {
-      display: flex; flex-direction: column; gap: .6rem; height: 100%;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      gap: .5rem; height: 100%;
       background: var(--glass); color: var(--ink);
       border: 1px solid var(--line); border-top: 4px solid var(--page-accent);
-      border-radius: var(--radius); padding: 1rem; text-decoration: none;
+      border-radius: var(--radius); padding: .85rem; text-decoration: none;
       transition: transform .15s ease, box-shadow .15s ease;
     }
     .game-card .card-blurb { margin: 0; color: var(--muted); flex: 1; }
     .thumb {
-      width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 18px;
+      width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 18px;
       background: rgba(255, 255, 255, .08);
     }
     .thumb-icon {
@@ -158,7 +161,7 @@
       background: radial-gradient(90% 90% at 30% 20%, var(--page-accent), transparent 80%), rgba(255, 255, 255, .06);
     }
     .play, .soon {
-      align-self: flex-start; font-weight: 800; padding: .5rem 1.3rem; min-height: 44px;
+      align-self: center; font-weight: 800; padding: .4rem 1.3rem; min-height: 44px;
       border-radius: 999px; display: inline-flex; align-items: center;
     }
     .play { background: var(--page-accent); color: #0a0f1f; }
@@ -177,7 +180,7 @@
     }
     @media (max-width: 480px) {
       h1 { font-size: 1.9rem; }
-      .grid { grid-template-columns: 1fr; }
+      .grid > li { flex-basis: 100%; }
       .wordmark .rest { letter-spacing: .24em; padding-left: .24em; }
     }
   </style>
@@ -186,7 +189,7 @@
   <a class="skip" href="#main">Skip to content</a>
   <header class="site">
     <a href="#" class="brand" aria-label="AC Edu Engagement, home">
-      <img src="images/logo.png" alt="" width="44" height="44">
+      <img src="logo.png" alt="" width="44" height="44">
       <span id="site-name">AC Edu Engagement</span>
     </a>
   </header>
