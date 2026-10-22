@@ -11,7 +11,7 @@
 
 window.SITE = {
   name: "AC Edu Engagement",
-  tagline: "Learning games, designed by a teacher."
+  tagline: "Safe learning platforms, designed by an educator."
 };
 
 // icon = which built-in icon to draw (see ICONS in app.js)
