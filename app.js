@@ -5,6 +5,25 @@
   var siteName = document.getElementById("site-name");
   siteName.textContent = window.SITE.name;
 
+  // Simple line icons drawn on a 32 x 32 grid. They take the colour of the text around them.
+  var gear = '<circle cx="16" cy="16" r="8"/><circle cx="16" cy="16" r="3"/>';
+  for (var i = 0; i < 8; i++) {
+    var a = i * Math.PI / 4;
+    var x1 = (16 + Math.cos(a) * 8.5).toFixed(2), y1 = (16 + Math.sin(a) * 8.5).toFixed(2);
+    var x2 = (16 + Math.cos(a) * 13.2).toFixed(2), y2 = (16 + Math.sin(a) * 13.2).toFixed(2);
+    gear += '<path d="M' + x1 + ' ' + y1 + 'L' + x2 + ' ' + y2 + '" stroke-width="4.4" stroke-linecap="butt"/>';
+  }
+
+  var ICONS = {
+    maths: '<path d="M9 5v12M3 11h12"/><path d="M19 8h8M19 12.5h8"/><path d="M3 25h12"/><path d="M19.5 20.5l7 7M26.5 20.5l-7 7"/>',
+    spelling: '<text x="16" y="23.5" text-anchor="middle" font-size="19" font-weight="800" fill="currentColor" stroke="none" font-family="inherit">Aa</text>',
+    computational: '<circle cx="16" cy="7" r="3.5"/><circle cx="7" cy="25" r="3.5"/><circle cx="25" cy="25" r="3.5"/><path d="M14 10l-5 11.5M18 10l5 11.5"/>',
+    stem: '<path d="M12.5 4h7M14 4v8L6.5 25.2A2.2 2.2 0 0 0 8.4 28.5h15.2a2.2 2.2 0 0 0 1.9-3.3L18 12V4"/><path d="M10 20h12"/>',
+    engineering: gear,
+    finance: '<ellipse cx="16" cy="9" rx="9" ry="3.5"/><path d="M7 9v5c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M7 14v5c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5v-5"/><path d="M7 19v5c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5v-5"/>',
+    art: '<path d="M5 27l1.6-6.6L20.8 6.2a2.6 2.6 0 0 1 3.7 0l1.3 1.3a2.6 2.6 0 0 1 0 3.7L11.6 25.4z"/><path d="M18.5 8.5l5 5"/>'
+  };
+
   function el(tag, attrs, children) {
     var node = document.createElement(tag);
     Object.keys(attrs || {}).forEach(function (key) {
@@ -18,8 +37,16 @@
     return node;
   }
 
-  function icon(symbol) {
-    return el("span", { class: "icon", "aria-hidden": "true", text: symbol });
+  function iconSvg(name) {
+    var holder = el("span", { class: "icon-svg", "aria-hidden": "true" });
+    holder.innerHTML =
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" ' +
+      'stroke-linecap="round" stroke-linejoin="round" focusable="false">' + (ICONS[name] || "") + "</svg>";
+    return holder;
+  }
+
+  function badge(name) {
+    return el("span", { class: "badge", "aria-hidden": "true" }, [iconSvg(name)]);
   }
 
   function gamesIn(categoryId) {
@@ -37,7 +64,7 @@
         style: "--accent:" + cat.colour,
         "aria-label": cat.name + ", " + countText
       }, [
-        icon(cat.icon),
+        badge(cat.icon),
         el("span", { class: "card-title", text: cat.name }),
         el("span", { class: "card-blurb", text: cat.blurb }),
         el("span", { class: "pill", text: countText })
@@ -55,11 +82,7 @@
       el("p", { class: "lead", text: window.SITE.tagline })
     ]);
 
-    return {
-      title: window.SITE.name,
-      page: "home",
-      nodes: [hero, grid]
-    };
+    return { title: window.SITE.name, page: "home", nodes: [hero, grid] };
   }
 
   function renderCategory(cat) {
@@ -71,9 +94,7 @@
       if (game.image) {
         thumb = el("img", { class: "thumb", src: game.image, alt: "", loading: "lazy" });
       } else {
-        thumb = el("div", { class: "thumb thumb-icon", "aria-hidden": "true" }, [
-          el("span", { text: game.icon || cat.icon })
-        ]);
+        thumb = el("div", { class: "thumb thumb-icon", "aria-hidden": "true" }, [iconSvg(cat.icon)]);
       }
 
       var body = [
@@ -84,7 +105,7 @@
 
       var card;
       if (game.url) {
-        body.push(el("span", { class: "play", "aria-hidden": "true", text: "Play ▶" }));
+        body.push(el("span", { class: "play", "aria-hidden": "true", text: "Play" }));
         card = el("a", {
           class: "game-card",
           href: game.url,
@@ -113,7 +134,7 @@
           document.createTextNode("All subjects")
         ]),
         el("h1", { id: "page-title", tabindex: "-1" }, [
-          icon(cat.icon),
+          badge(cat.icon),
           document.createTextNode(" " + cat.name)
         ]),
         el("p", { class: "lead", text: cat.blurb }),
@@ -133,7 +154,8 @@
     page.nodes.forEach(function (n) { main.appendChild(n); });
     document.title = page.title;
     document.body.setAttribute("data-page", page.page);
-    document.documentElement.style.setProperty("--page-accent", page.accent || "#a78bfa");
+    document.documentElement.style.setProperty("--page-accent", page.accent || "#2b4acb");
+    if (cat) { main.style.setProperty("--accent", cat.colour); } else { main.style.removeProperty("--accent"); }
 
     // Move focus to the heading on navigation so screen reader and keyboard users know the page changed.
     if (!firstRender) {
