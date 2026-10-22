@@ -172,6 +172,19 @@
     a.game-card:hover { transform: translateY(-5px); box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
     a:focus-visible { outline: 4px solid var(--focus); outline-offset: 4px; }
 
+    /* Scan-to-open QR code, home page only, top right */
+    .scan {
+      display: none; margin: 0;
+      position: absolute; top: 1rem; right: 1rem; width: 104px;
+      text-align: center; color: var(--muted); font-size: .8rem; font-weight: 700;
+    }
+    .scan img {
+      display: block; width: 100%; height: auto; border-radius: 12px; background: #fff;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, .15);
+    }
+    .scan figcaption { margin-top: .3rem; letter-spacing: .08em; text-transform: uppercase; }
+    @media (min-width: 700px) { body[data-page="home"] .scan { display: block; } }
+
     footer { text-align: center; color: var(--muted); padding: 1.5rem 1.25rem 2.5rem; font-size: .9rem; }
     footer p { margin: .25rem 0; }
 
@@ -193,6 +206,10 @@
       <span id="site-name">AC Edu Engagement</span>
     </a>
   </header>
+  <figure class="scan">
+    <img src="qr.png" alt="QR code to open the AC Edu Engagement website on a tablet or phone" width="104" height="104">
+    <figcaption>Scan me</figcaption>
+  </figure>
   <main id="main" tabindex="-1">
     <noscript><p class="lead">This site needs JavaScript to show the games.</p></noscript>
   </main>
