@@ -196,6 +196,53 @@
       .grid > li { flex-basis: 100%; }
       .wordmark .rest { letter-spacing: .24em; padding-left: .24em; }
     }
+
+    /* ===== Home page: everything fits on one screen, no scrolling ===== */
+    body[data-page="home"] {
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; flex-direction: column;
+    }
+    body[data-page="home"] main {
+      flex: 1; width: 100%; padding: .5rem 1.25rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    body[data-page="home"] .hero { padding: .25rem 0 .9rem; }
+    body[data-page="home"] .hero-logo {
+      width: clamp(60px, 11vh, 96px); height: clamp(60px, 11vh, 96px);
+      border-width: 3px;
+      box-shadow: 0 0 0 7px rgba(255, 255, 255, .08), 0 0 50px rgba(124, 58, 237, .5);
+    }
+    body[data-page="home"] .wordmark { margin: .6rem 0 .3rem; }
+    body[data-page="home"] .wordmark .ac { font-size: clamp(2.6rem, min(14vw, 12vh), 5.5rem); }
+    body[data-page="home"] .wordmark .rest { font-size: clamp(.8rem, min(4.2vw, 2.6vh), 1.5rem); margin-top: .2rem; }
+    body[data-page="home"] .hero .lead { margin: .6rem auto 0; font-size: clamp(.9rem, 2.4vh, 1.15rem); }
+    body[data-page="home"] .grid { gap: .75rem; }
+    body[data-page="home"] .grid > li { flex: 0 1 calc(25% - .6rem); }
+    body[data-page="home"] .category-card {
+      min-height: 0; padding: .9rem .6rem; gap: .2rem; border-radius: 22px;
+    }
+    body[data-page="home"] .category-card .icon {
+      width: clamp(2.4rem, 6vh, 3.2rem); height: clamp(2.4rem, 6vh, 3.2rem);
+      font-size: clamp(1.4rem, 3.4vh, 1.9rem); border-radius: 14px; margin-bottom: .2rem;
+    }
+    body[data-page="home"] .category-card .card-title { font-size: clamp(1rem, 2.4vh, 1.2rem); }
+    body[data-page="home"] .category-card .card-blurb { display: none; }
+    body[data-page="home"] .pill { font-size: .8rem; padding: .1rem .7rem; margin-top: .15rem; }
+    body[data-page="home"] .scan { width: 88px; font-size: .7rem; top: .75rem; right: .75rem; }
+    @media (max-width: 900px) {
+      body[data-page="home"] .grid > li { flex-basis: calc(33.333% - .55rem); }
+    }
+    @media (max-width: 600px) {
+      body[data-page="home"] .grid > li { flex-basis: calc(50% - .4rem); }
+      body[data-page="home"] .grid { gap: .6rem; }
+      body[data-page="home"] .category-card { padding: .55rem .4rem; }
+      body[data-page="home"] .category-card .icon { width: 2.1rem; height: 2.1rem; font-size: 1.2rem; border-radius: 11px; }
+      body[data-page="home"] .category-card .card-title { font-size: .92rem; }
+      body[data-page="home"] .pill { font-size: .72rem; }
+    }
+    footer { padding: .6rem 1rem 1rem; font-size: .8rem; }
+    footer p { display: inline; margin: 0; }
+    footer p + p::before { content: "\00a0\00b7\00a0"; }
   </style>
 </head>
 <body>
