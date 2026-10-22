@@ -1,7 +1,7 @@
 // ============================================================
 // EDIT THIS FILE to change the site name or add games.
 // To add a game, copy one block in GAMES and change the details.
-//   category: maths | spelling | computational | stem | engineering | finance | art
+//   category: maths | spelling | computational | stem | finance | art
 //   url:      the game's own web address (leave "" for "Coming soon")
 //   image:    optional screenshot, e.g. "shots/make-ten.png"
 //             (without one, the card shows its subject icon)
@@ -18,7 +18,6 @@ window.CATEGORIES = [
   { id: "spelling",      name: "Spelling",               icon: "spelling",      colour: "#7c4fd1", blurb: "Spell words and have fun" },
   { id: "computational", name: "Computational Thinking", icon: "computational", colour: "#12a36b", blurb: "Solve problems like a computer scientist" },
   { id: "stem",          name: "STEM",                   icon: "stem",          colour: "#ee7d1f", blurb: "Science, technology, engineering and maths" },
-  { id: "engineering",   name: "Engineering",            icon: "engineering",   colour: "#0f9fb5", blurb: "Design it, build it, test it" },
   { id: "finance",       name: "Financial Literacy",     icon: "finance",       colour: "#d9a006", blurb: "Learn about money" },
   { id: "art",           name: "Art",                    icon: "art",           colour: "#e5527a", blurb: "Create digital art" }
 ];
@@ -53,14 +52,14 @@ window.GAMES = [
     image: ""
   },
   {
-    category: "engineering",
+    category: "stem",
     title: "Brickyard",
     summary: "Build anything you like, brick by brick.",
     url: "https://brickyard-ivory.vercel.app/",
     image: ""
   },
   {
-    category: "engineering",
+    category: "stem",
     title: "Mountain Makers",
     summary: "Build a mountain landscape from blocks, then see it as a map.",
     url: "https://terrablocks.vercel.app/",
