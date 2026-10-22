@@ -3,13 +3,15 @@
 // To add a game, copy one block in GAMES and change the details.
 //   category: maths | spelling | computational | stem | finance | art
 //   url:      the game's own web address (leave "" for "Coming soon")
+//   icon:     which built-in icon to draw on the card (see ICONS in app.js).
+//             Leave it out to use the subject icon.
 //   image:    optional screenshot, e.g. "shots/make-ten.png"
-//             (without one, the card shows its subject icon)
+//             (if set, it replaces the icon)
 // ============================================================
 
 window.SITE = {
   name: "AC Edu Engagement",
-  tagline: "Pick a subject and start playing!"
+  tagline: "Learning games, designed by a teacher."
 };
 
 // icon = which built-in icon to draw (see ICONS in app.js)
@@ -26,6 +28,7 @@ window.GAMES = [
   {
     category: "maths",
     title: "Crazy Calas Frisbee Golf",
+    icon: "frisbee",
     summary: "Throw discs round nine holes, then win the maths challenge to unlock the next course.",
     url: "https://calasfrisbeegolf-math.vercel.app/",
     image: ""
@@ -33,6 +36,7 @@ window.GAMES = [
   {
     category: "spelling",
     title: "Spelling Sports",
+    icon: "skateboard",
     summary: "Spell words in 30 seconds to earn time on the skate park, BMX trail, surf and more.",
     url: "https://sportspelling-mrandy.vercel.app/",
     image: ""
@@ -40,6 +44,7 @@ window.GAMES = [
   {
     category: "computational",
     title: "Brain Engine",
+    icon: "chip",
     summary: "Four brain games: copy light sequences, spot what went missing, remember patterns and program a turtle through a maze.",
     url: "https://memorygame-seven-puce.vercel.app/",
     image: ""
@@ -47,6 +52,7 @@ window.GAMES = [
   {
     category: "stem",
     title: "Wind Tunnel Garage",
+    icon: "car",
     summary: "Design and paint a car, test it in a wind tunnel, then race it.",
     url: "https://ac-windtunnel.vercel.app/",
     image: ""
@@ -54,6 +60,7 @@ window.GAMES = [
   {
     category: "stem",
     title: "Brickyard",
+    icon: "brick",
     summary: "Build anything you like, brick by brick.",
     url: "https://brickyard-ivory.vercel.app/",
     image: ""
@@ -61,6 +68,7 @@ window.GAMES = [
   {
     category: "stem",
     title: "Mountain Makers",
+    icon: "mountain",
     summary: "Build a mountain landscape from blocks, then see it as a map.",
     url: "https://terrablocks.vercel.app/",
     image: ""
@@ -68,6 +76,7 @@ window.GAMES = [
   {
     category: "finance",
     title: "Lemonade Stand",
+    icon: "lemonade",
     summary: "Run a lemonade stand and a sport shop to learn about money.",
     url: "https://mrandy-lemonadestand.vercel.app/",
     image: ""
@@ -75,6 +84,7 @@ window.GAMES = [
   {
     category: "art",
     title: "Digital Art Tools",
+    icon: "pixels",
     summary: "Colour in pictures by giving the computer step-by-step instructions.",
     url: "https://digialart-mrandy.vercel.app/",
     image: ""

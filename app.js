@@ -14,6 +14,18 @@
     gear += '<path d="M' + x1 + ' ' + y1 + 'L' + x2 + ' ' + y2 + '" stroke-width="4.4" stroke-linecap="butt"/>';
   }
 
+  var pixels = "";
+  for (var r = 0; r < 3; r++) {
+    for (var c = 0; c < 3; c++) {
+      var px = 3.5 + c * 9, py = 3.5 + r * 9;
+      if ((r + c) % 2 === 0) {
+        pixels += '<rect x="' + px + '" y="' + py + '" width="7" height="7" rx="1.2" fill="currentColor" stroke="none"/>';
+      } else {
+        pixels += '<rect x="' + (px + 0.9) + '" y="' + (py + 0.9) + '" width="5.2" height="5.2" rx="1" stroke-width="1.8"/>';
+      }
+    }
+  }
+
   var ICONS = {
     maths: '<path d="M9 5v12M3 11h12"/><path d="M19 8h8M19 12.5h8"/><path d="M3 25h12"/><path d="M19.5 20.5l7 7M26.5 20.5l-7 7"/>',
     spelling: '<text x="16" y="23.5" text-anchor="middle" font-size="19" font-weight="800" fill="currentColor" stroke="none" font-family="inherit">Aa</text>',
@@ -21,7 +33,17 @@
     stem: '<path d="M12.5 4h7M14 4v8L6.5 25.2A2.2 2.2 0 0 0 8.4 28.5h15.2a2.2 2.2 0 0 0 1.9-3.3L18 12V4"/><path d="M10 20h12"/>',
     engineering: gear,
     finance: '<ellipse cx="16" cy="9" rx="9" ry="3.5"/><path d="M7 9v5c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M7 14v5c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5v-5"/><path d="M7 19v5c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5v-5"/>',
-    art: '<path d="M5 27l1.6-6.6L20.8 6.2a2.6 2.6 0 0 1 3.7 0l1.3 1.3a2.6 2.6 0 0 1 0 3.7L11.6 25.4z"/><path d="M18.5 8.5l5 5"/>'
+    art: '<path d="M5 27l1.6-6.6L20.8 6.2a2.6 2.6 0 0 1 3.7 0l1.3 1.3a2.6 2.6 0 0 1 0 3.7L11.6 25.4z"/><path d="M18.5 8.5l5 5"/>',
+
+    // One icon per game
+    frisbee: '<g transform="rotate(-14 17 14)"><ellipse cx="17" cy="14" rx="11" ry="4.5"/><ellipse cx="17" cy="14" rx="5" ry="1.8"/></g><path d="M3 22h9M6 26.5h8"/>',
+    skateboard: '<path d="M4 11c2.2 0 3 4.5 6 4.5h12c3 0 3.8-4.5 6-4.5"/><path d="M10 15.5v4M22 15.5v4"/><circle cx="10" cy="23" r="2.6"/><circle cx="22" cy="23" r="2.6"/>',
+    chip: '<rect x="8" y="8" width="16" height="16" rx="3"/><rect x="13" y="13" width="6" height="6" rx="1"/><path d="M12 4v4M16 4v4M20 4v4M12 24v4M16 24v4M20 24v4M4 12h4M4 16h4M4 20h4M24 12h4M24 16h4M24 20h4"/>',
+    car: '<g transform="translate(6.5 3) scale(.8)"><path d="M3.5 21v-3.4c0-.7.4-1.3 1.1-1.5l4.6-1.4 3.3-4.4h8l3.8 4.3 2.1.6c.7.2 1.1.8 1.1 1.5V21z"/><circle cx="10.5" cy="21.5" r="2.8"/><circle cx="23" cy="21.5" r="2.8"/></g><path d="M2.5 14h6M4 18h4.5M2.5 22h4"/>',
+    brick: '<rect x="5" y="13" width="22" height="12" rx="2"/><path d="M10 13V9.5h5V13M17 13V9.5h5V13"/>',
+    mountain: '<path d="M3 26l9-15 5.5 8.5 3-4.5L29 26z"/><circle cx="24" cy="8" r="2.6"/>',
+    lemonade: '<path d="M7 8h15l-2.2 18H9.2z"/><path d="M7.8 14.5h13.4"/><path d="M17.5 3.5l-2 11"/><circle cx="25.5" cy="9" r="3.2"/>',
+    pixels: pixels
   };
 
   function el(tag, attrs, children) {
@@ -94,7 +116,7 @@
       if (game.image) {
         thumb = el("img", { class: "thumb", src: game.image, alt: "", loading: "lazy" });
       } else {
-        thumb = el("div", { class: "thumb thumb-icon", "aria-hidden": "true" }, [iconSvg(cat.icon)]);
+        thumb = el("div", { class: "thumb thumb-icon", "aria-hidden": "true" }, [iconSvg(ICONS[game.icon] ? game.icon : cat.icon)]);
       }
 
       var body = [
