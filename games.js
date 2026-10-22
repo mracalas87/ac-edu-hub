@@ -1,7 +1,7 @@
 // ============================================================
 // EDIT THIS FILE to change the site name or add games.
 // To add a game, copy one block in GAMES and change the details.
-//   category: maths | spelling | computational | stem | finance | art
+//   category: maths | spelling | computational | stem | finance | art | music
 //   url:      the game's own web address (leave "" for "Coming soon")
 //   icon:     which built-in icon to draw on the card (see ICONS in app.js).
 //             Leave it out to use the subject icon.
@@ -21,7 +21,8 @@ window.CATEGORIES = [
   { id: "computational", name: "Computational Thinking", icon: "computational", colour: "#12a36b", blurb: "Solve problems like a computer scientist" },
   { id: "stem",          name: "STEM",                   icon: "stem",          colour: "#ee7d1f", blurb: "Science, technology, engineering and maths" },
   { id: "finance",       name: "Financial Literacy",     icon: "finance",       colour: "#d9a006", blurb: "Learn about money" },
-  { id: "art",           name: "Art",                    icon: "art",           colour: "#e5527a", blurb: "Create digital art" }
+  { id: "art",           name: "Art",                    icon: "art",           colour: "#e5527a", blurb: "Create digital art" },
+  { id: "music",         name: "Music",                  icon: "music",         colour: "#0f9fb5", blurb: "Make and explore music" }
 ];
 
 window.GAMES = [
@@ -87,6 +88,14 @@ window.GAMES = [
     icon: "pixels",
     summary: "Colour in pictures by giving the computer step-by-step instructions.",
     url: "https://digialart-mrandy.vercel.app/",
+    image: ""
+  },
+  {
+    category: "music",
+    title: "Beat Pad",
+    icon: "music",
+    summary: "Tap the pads to make your own beats and loops.",
+    url: "https://ac-beatpad.vercel.app/",
     image: ""
   }
 ];

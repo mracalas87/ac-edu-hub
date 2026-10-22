@@ -35,6 +35,8 @@
     finance: '<ellipse cx="16" cy="9" rx="9" ry="3.5"/><path d="M7 9v5c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M7 14v5c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5v-5"/><path d="M7 19v5c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5v-5"/>',
     art: '<path d="M5 27l1.6-6.6L20.8 6.2a2.6 2.6 0 0 1 3.7 0l1.3 1.3a2.6 2.6 0 0 1 0 3.7L11.6 25.4z"/><path d="M18.5 8.5l5 5"/>',
 
+    music: '<path d="M12 23V7l13-3v16"/><circle cx="8.5" cy="23" r="3.5"/><circle cx="21.5" cy="20" r="3.5"/>',
+
     // One icon per game
     frisbee: '<g transform="rotate(-14 17 14)"><ellipse cx="17" cy="14" rx="11" ry="4.5"/><ellipse cx="17" cy="14" rx="5" ry="1.8"/></g><path d="M3 22h9M6 26.5h8"/>',
     skateboard: '<path d="M4 11c2.2 0 3 4.5 6 4.5h12c3 0 3.8-4.5 6-4.5"/><path d="M10 15.5v4M22 15.5v4"/><circle cx="10" cy="23" r="2.6"/><circle cx="22" cy="23" r="2.6"/>',
@@ -76,22 +78,26 @@
   }
 
   function renderHome() {
-    var grid = el("ul", { class: "grid category-grid", role: "list" });
+    var grid = el("ul", { class: "grid category-grid" + (window.CATEGORIES.length > 6 ? " many" : ""), role: "list" });
     window.CATEGORIES.forEach(function (cat) {
       var count = gamesIn(cat.id).length;
-      var countText = count === 1 ? "1 platform" : count + " platforms";
-      var link = el("a", {
-        class: "category-card",
-        href: "#" + cat.id,
-        style: "--accent:" + cat.colour,
-        "aria-label": cat.name + ", " + countText
-      }, [
+      var soon = count === 0;
+      var countText = soon ? "Coming soon" : (count === 1 ? "1 platform" : count + " platforms");
+      var parts = [
         badge(cat.icon),
         el("span", { class: "card-title", text: cat.name }),
         el("span", { class: "card-blurb", text: cat.blurb }),
         el("span", { class: "pill", text: countText })
-      ]);
-      grid.appendChild(el("li", {}, [link]));
+      ];
+      var card = soon
+        ? el("div", { class: "category-card disabled", style: "--accent:" + cat.colour }, parts)
+        : el("a", {
+            class: "category-card",
+            href: "#" + cat.id,
+            style: "--accent:" + cat.colour,
+            "aria-label": cat.name + ", " + countText
+          }, parts);
+      grid.appendChild(el("li", {}, [card]));
     });
 
     var hero = el("section", { class: "hero" }, [
@@ -222,7 +228,7 @@
     } catch (e) {}
   }
 
-  var CLICKABLE = ".category-card, .game-card:not(.disabled), .back, header.site a";
+  var CLICKABLE = ".category-card:not(.disabled), .game-card:not(.disabled), .back, header.site a";
   function isClickable(target) { return target && target.closest && target.closest(CLICKABLE); }
 
   // Mouse: sound on press. Touch: sound on release, so scrolling stays silent.

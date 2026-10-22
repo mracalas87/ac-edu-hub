@@ -214,6 +214,14 @@
       body[data-page="home"] .category-card .badge { width: 2.1rem; height: 2.1rem; border-radius: 11px; }
       body[data-page="home"] .category-card .card-title { font-size: .92rem; }
       body[data-page="home"] .pill { font-size: .72rem; }
+      body[data-page="home"] .category-card { min-height: 0; gap: .2rem; }
+      body[data-page="home"] .grid { row-gap: .75rem; }
+      body[data-page="home"] .hero-logo { width: 68px; height: 68px; }
+      body[data-page="home"] .wordmark { margin: .35rem 0 .2rem; }
+      body[data-page="home"] .hero .lead { font-size: .88rem; margin: .4rem auto 0; line-height: 1.35; }
+      body[data-page="home"] .category-card .card-title { font-size: .85rem; line-height: 1.15; }
+      body[data-page="home"] footer { padding: .5rem; font-size: .75rem; }
+      body[data-page="home"] footer p { margin: 0; }
     }
     /* ===== Button feel: raised coloured edge that presses down when tapped ===== */
     .category-card, .game-card:not(.disabled), .back, .sound-toggle {
@@ -264,6 +272,16 @@
     .sound-toggle[aria-pressed="false"] .on { display: none; }
     .sound-toggle[aria-pressed="false"] .off { display: block; }
     body[data-page="category"] .sound-toggle { left: auto; right: 1rem; top: .85rem; }
+    /* Seven subjects: four across, then three */
+    body[data-page="home"] .grid.many > li { flex: 0 1 calc(25% - .6rem); }
+    @media (max-width: 900px) { body[data-page="home"] .grid.many > li { flex-basis: calc(33.333% - .55rem); } }
+    @media (max-width: 600px) { body[data-page="home"] .grid.many > li { flex-basis: calc(50% - .4rem); } }
+
+    /* A subject with no platforms yet: not pressable */
+    .category-card.disabled {
+      border-style: dashed; box-shadow: none; cursor: default;
+    }
+    .category-card.disabled .pill { background: transparent; border: 2px dashed var(--line); }
   </style>
 </head>
 <body>
