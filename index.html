@@ -308,7 +308,10 @@
     .chip[aria-pressed="true"] { background: var(--accent); color: #fff; }
     .chip:focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; }
     .subject[hidden] { display: none; }
-    .all-games { display: flex; flex-direction: column; gap: 1.1rem; }
+    /* Even columns: every card the same width, subjects flow neatly across the page */
+    .all-games { column-width: 235px; column-gap: 1.5rem; padding-top: .6rem; }
+    .subject { break-inside: avoid; margin: 0 0 1.5rem; }
+    .all-games .sticker { margin: 0 0 1rem .2rem; }
     .subject-head {
       display: flex; align-items: center; gap: .55rem; margin: 0 0 .55rem;
       font-size: 1.15rem; font-weight: 800; color: var(--accent);
@@ -324,8 +327,7 @@
     body[data-page="home"] .chip { font-family: inherit; font-size: 1.05rem; font-weight: 400; }
     .tiles {
       list-style: none; margin: 0; padding: .6rem 0 1rem;
-      display: grid; gap: 1.3rem 1.1rem; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      grid-auto-rows: 1fr;
+      display: grid; gap: 1.2rem; grid-template-columns: 1fr;
     }
     .tiles > li[hidden] { display: none; }
     .tiles > li.head { display: flex; align-items: center; justify-content: center; }
@@ -365,7 +367,8 @@
     a.tile:active { transform: rotate(0) translateY(3px); box-shadow: 1px 2px 0 var(--accent); transition-duration: .04s; }
     .tile.disabled { border-style: dashed; box-shadow: none; cursor: default; }
     @media (max-width: 520px) {
-      .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem .7rem; }
+      .all-games { column-width: 150px; column-gap: .8rem; }
+      .tiles { gap: 1.1rem; }
       .tile { padding: .8rem .5rem .5rem; }
       .tile-icon { width: 1.8rem; height: 1.8rem; }
       .tile-title { font-size: 1.05rem; }
