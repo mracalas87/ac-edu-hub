@@ -83,6 +83,14 @@
     // Every game on the home page: one even grid of small tiles, coloured by subject
     var tiles = [];
     window.CATEGORIES.forEach(function (cat) {
+      if (gamesIn(cat.id).length) {
+        tiles.push(el("li", { class: "head", "data-cat": cat.id, style: "--accent:" + cat.colour }, [
+          el("h2", { class: "sticker" }, [
+            el("span", { class: "sticker-icon", "aria-hidden": "true" }, [iconSvg(cat.icon)]),
+            document.createTextNode(cat.name)
+          ])
+        ]));
+      }
       gamesIn(cat.id).forEach(function (game) {
         var parts = [
           el("span", { class: "tile-icon", "aria-hidden": "true" }, [iconSvg(ICONS[game.icon] ? game.icon : cat.icon)]),
