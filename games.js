@@ -35,6 +35,14 @@ window.GAMES = [
     image: ""
   },
   {
+    category: "maths",
+    title: "Skiddie D1 Racing",
+    icon: "car",
+    summary: "Drift round the circuits in a top-down race car, then answer maths questions to unlock new tracks.",
+    url: "https://ac-skiddie-d1-racing.vercel.app/",
+    image: ""
+  },
+  {
     category: "spelling",
     title: "Spelling Sports",
     icon: "skateboard",
