@@ -80,13 +80,15 @@
   var homeFilter = "all"; // which subject the home page is showing
 
   function renderHome() {
-    // Every game on the home page: sticker headings with taped cards, flowed into even columns
-    var sections = [];
+    // Every game on the home page: one even grid of taped cards, each tape showing its subject
+    var tiles = [];
     window.CATEGORIES.forEach(function (cat) {
-      var games = gamesIn(cat.id);
-      if (!games.length) return;
-      var items = games.map(function (game) {
+      gamesIn(cat.id).forEach(function (game) {
         var parts = [
+          el("span", { class: "tape" }, [
+            el("span", { class: "tape-icon", "aria-hidden": "true" }, [iconSvg(cat.icon)]),
+            document.createTextNode(cat.name)
+          ]),
           el("span", { class: "tile-icon", "aria-hidden": "true" }, [iconSvg(ICONS[game.icon] ? game.icon : cat.icon)]),
           el("span", { class: "tile-text" }, [
             el("span", { class: "tile-title", text: game.title }),
@@ -96,20 +98,13 @@
         var tile = game.url
           ? el("a", {
               class: "tile", href: game.url, target: "_blank", rel: "noopener noreferrer",
-              "aria-label": "Play " + game.title + ". Opens in a new tab."
+              "aria-label": "Play " + game.title + ", " + cat.name + ". Opens in a new tab."
             }, parts)
           : el("div", { class: "tile disabled" }, parts);
-        return el("li", {}, [tile]);
+        tiles.push(el("li", { "data-cat": cat.id, style: "--accent:" + cat.colour }, [tile]));
       });
-      sections.push(el("section", { class: "subject", "data-cat": cat.id, style: "--accent:" + cat.colour, "aria-labelledby": "h-" + cat.id }, [
-        el("h2", { class: "sticker", id: "h-" + cat.id }, [
-          el("span", { class: "sticker-icon", "aria-hidden": "true" }, [iconSvg(cat.icon)]),
-          document.createTextNode(cat.name)
-        ]),
-        el("ul", { class: "tiles", role: "list" }, items)
-      ]));
     });
-    var grid = el("div", { class: "all-games" }, sections);
+    var grid = el("ul", { class: "tiles", role: "list" }, tiles);
 
     // Filter buttons: All, or one subject at a time (only subjects that have games)
     var filterBar = el("div", { class: "filters", role: "group", "aria-label": "Show games from" });
@@ -118,7 +113,7 @@
       Array.prototype.forEach.call(filterBar.children, function (b) {
         b.setAttribute("aria-pressed", b.getAttribute("data-id") === id ? "true" : "false");
       });
-      sections.forEach(function (s) { s.hidden = id !== "all" && s.getAttribute("data-cat") !== id; });
+      tiles.forEach(function (li) { li.hidden = id !== "all" && li.getAttribute("data-cat") !== id; });
     }
     [{ id: "all", name: "All games", colour: "#14213d" }].concat(window.CATEGORIES.filter(function (c) {
       return gamesIn(c.id).length > 0;
