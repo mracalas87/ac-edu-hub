@@ -83,6 +83,14 @@ window.GAMES = [
     image: ""
   },
   {
+    category: "stem",
+    title: "Inside Out Lab",
+    icon: "chip",
+    summary: "Look inside an iPad, laptop, tower PC and more in 3D, then build your own gaming PC.",
+    url: "https://ac-inside-out-lab.vercel.app/",
+    image: ""
+  },
+  {
     category: "finance",
     title: "Lemonade Stand",
     icon: "lemonade",
