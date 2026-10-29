@@ -78,26 +78,35 @@
   }
 
   function renderHome() {
-    var grid = el("ul", { class: "grid category-grid" + (window.CATEGORIES.length > 6 ? " many" : ""), role: "list" });
+    // Every game on the home page: one coloured section per subject, small tiles inside
+    var grid = el("div", { class: "all-games" });
     window.CATEGORIES.forEach(function (cat) {
-      var count = gamesIn(cat.id).length;
-      var soon = count === 0;
-      var countText = soon ? "Coming soon" : (count === 1 ? "1 platform" : count + " platforms");
-      var parts = [
-        badge(cat.icon),
-        el("span", { class: "card-title", text: cat.name }),
-        el("span", { class: "card-blurb", text: cat.blurb }),
-        el("span", { class: "pill", text: countText })
-      ];
-      var card = soon
-        ? el("div", { class: "category-card disabled", style: "--accent:" + cat.colour }, parts)
-        : el("a", {
-            class: "category-card",
-            href: "#" + cat.id,
-            style: "--accent:" + cat.colour,
-            "aria-label": cat.name + ", " + countText
-          }, parts);
-      grid.appendChild(el("li", {}, [card]));
+      var games = gamesIn(cat.id);
+      var tiles = games.map(function (game) {
+        var parts = [
+          el("span", { class: "tile-icon", "aria-hidden": "true" }, [iconSvg(ICONS[game.icon] ? game.icon : cat.icon)]),
+          el("span", { class: "tile-text" }, [
+            el("span", { class: "tile-title", text: game.title }),
+            el("span", { class: "tile-sum", text: game.summary })
+          ])
+        ];
+        var tile = game.url
+          ? el("a", {
+              class: "tile", href: game.url, target: "_blank", rel: "noopener noreferrer",
+              "aria-label": "Play " + game.title + ". Opens in a new tab."
+            }, parts)
+          : el("div", { class: "tile disabled" }, parts);
+        return el("li", {}, [tile]);
+      });
+
+      var body = games.length
+        ? el("ul", { class: "tiles", role: "list" }, tiles)
+        : el("p", { class: "soon-note", text: "New games are coming soon." });
+
+      grid.appendChild(el("section", { class: "subject", style: "--accent:" + cat.colour, "aria-labelledby": "h-" + cat.id }, [
+        el("h2", { class: "subject-head", id: "h-" + cat.id }, [badge(cat.icon), document.createTextNode(" " + cat.name)]),
+        body
+      ]));
     });
 
     var hero = el("section", { class: "hero" }, [
@@ -228,7 +237,7 @@
     } catch (e) {}
   }
 
-  var CLICKABLE = ".category-card:not(.disabled), .game-card:not(.disabled), .back, header.site a";
+  var CLICKABLE = ".category-card:not(.disabled), .game-card:not(.disabled), .tile:not(.disabled), .back, header.site a";
   function isClickable(target) { return target && target.closest && target.closest(CLICKABLE); }
 
   // Mouse: sound on press. Touch: sound on release, so scrolling stays silent.
