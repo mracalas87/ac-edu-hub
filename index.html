@@ -279,6 +279,18 @@
 
     /* ===== Home page: every game in small tiles, grouped by subject colour ===== */
     body[data-page="home"] main { justify-content: flex-start; max-width: 1100px; padding: .5rem 1.25rem 1.5rem; }
+    .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: .45rem; margin: 0 0 1rem; }
+    .chip {
+      font: inherit; font-weight: 800; font-size: .85rem; min-height: 40px; padding: .3rem .95rem;
+      border-radius: 999px; cursor: pointer; background: #fff; color: var(--accent);
+      border: 2px solid var(--accent); box-shadow: 0 3px 0 var(--accent);
+      -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+      transition: transform .08s ease, box-shadow .08s ease;
+    }
+    .chip:active { transform: translateY(3px); box-shadow: 0 0 0 var(--accent); }
+    .chip[aria-pressed="true"] { background: var(--accent); color: #fff; }
+    .chip:focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; }
+    .subject[hidden] { display: none; }
     .all-games { display: flex; flex-direction: column; gap: 1.1rem; }
     .subject-head {
       display: flex; align-items: center; gap: .55rem; margin: 0 0 .55rem;

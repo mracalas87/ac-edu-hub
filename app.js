@@ -77,6 +77,8 @@
     return window.GAMES.filter(function (g) { return g.category === categoryId; });
   }
 
+  var homeFilter = "all"; // which subject the home page is showing
+
   function renderHome() {
     // Every game on the home page: one coloured section per subject, small tiles inside
     var grid = el("div", { class: "all-games" });
@@ -109,6 +111,27 @@
       ]));
     });
 
+    // Filter buttons: All, or one subject at a time (only subjects that have games)
+    var sections = {};
+    Array.prototype.forEach.call(grid.children, function (sec, i) { sections[window.CATEGORIES[i].id] = sec; });
+    var filterBar = el("div", { class: "filters", role: "group", "aria-label": "Show games from" });
+    function applyFilter(id) {
+      homeFilter = id;
+      Array.prototype.forEach.call(filterBar.children, function (b) {
+        b.setAttribute("aria-pressed", b.getAttribute("data-id") === id ? "true" : "false");
+      });
+      window.CATEGORIES.forEach(function (c) { sections[c.id].hidden = id !== "all" && id !== c.id; });
+    }
+    [{ id: "all", name: "All games", colour: "#14213d" }].concat(window.CATEGORIES.filter(function (c) {
+      return gamesIn(c.id).length > 0;
+    })).forEach(function (c) {
+      var b = el("button", { class: "chip", type: "button", "data-id": c.id, "aria-pressed": "false", style: "--accent:" + c.colour, text: c.name });
+      b.addEventListener("click", function () { applyFilter(c.id); });
+      filterBar.appendChild(b);
+    });
+    if (!filterBar.querySelector('[data-id="' + homeFilter + '"]')) homeFilter = "all";
+    applyFilter(homeFilter);
+
     var hero = el("section", { class: "hero" }, [
       el("img", { class: "hero-logo", src: "logo.png", alt: "", width: "120", height: "120" }),
       el("h1", { id: "page-title", tabindex: "-1", class: "wordmark" }, [
@@ -119,7 +142,7 @@
       el("p", { class: "lead", text: window.SITE.tagline })
     ]);
 
-    return { title: window.SITE.name, page: "home", nodes: [hero, grid] };
+    return { title: window.SITE.name, page: "home", nodes: [hero, filterBar, grid] };
   }
 
   function renderCategory(cat) {
@@ -237,7 +260,7 @@
     } catch (e) {}
   }
 
-  var CLICKABLE = ".category-card:not(.disabled), .game-card:not(.disabled), .tile:not(.disabled), .back, header.site a";
+  var CLICKABLE = ".category-card:not(.disabled), .game-card:not(.disabled), .tile:not(.disabled), .chip, .back, header.site a";
   function isClickable(target) { return target && target.closest && target.closest(CLICKABLE); }
 
   // Mouse: sound on press. Touch: sound on release, so scrolling stays silent.
