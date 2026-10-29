@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#fbf8f3">
   <title>AC Edu Engagement</title>
+  <script>
+    // Apply the saved page colours before the page draws, so there is no flash
+    (function () {
+      var t = "default";
+      try { t = localStorage.getItem("ac-hub-theme") || t; } catch (e) {}
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
   <link rel="icon" type="image/png" href="logo.png">
   <meta name="description" content="Learning games for children: maths, spelling, computational thinking, STEM, financial literacy and art.">
   <style>
@@ -278,7 +286,12 @@
     @media (max-width: 600px) { body[data-page="home"] .grid.many > li { flex-basis: calc(50% - .4rem); } }
 
     /* ===== Home page: every game in small tiles, grouped by subject colour ===== */
-    body[data-page="home"] main { justify-content: flex-start; max-width: 1100px; padding: .5rem 1.25rem 1.5rem; }
+    body[data-page="home"] main { justify-content: flex-start; max-width: 1240px; padding: .25rem 1.25rem 1rem; }
+    body[data-page="home"] .hero { padding: .1rem 0 .5rem; }
+    body[data-page="home"] .hero-logo { width: clamp(48px, 8vh, 72px); height: clamp(48px, 8vh, 72px); }
+    body[data-page="home"] .wordmark { margin: .3rem 0 .15rem; }
+    body[data-page="home"] .wordmark .ac { font-size: clamp(2.2rem, min(9vw, 8vh), 3.6rem); }
+    body[data-page="home"] .hero .lead { margin: .3rem auto 0; font-size: clamp(.85rem, 2vh, 1rem); }
     .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: .45rem; margin: 0 0 1rem; }
     .chip {
       font: inherit; font-weight: 800; font-size: .85rem; min-height: 40px; padding: .3rem .95rem;
@@ -298,34 +311,87 @@
     }
     .subject-head .badge { width: 2rem; height: 2rem; border-radius: 10px; background: var(--accent); }
     .soon-note { margin: 0; color: var(--muted); font-size: .85rem; }
+    /* One even grid: every tile the same size, spread across the whole page width */
     .tiles {
       list-style: none; margin: 0; padding: 0 0 6px;
-      display: grid; gap: .65rem .6rem; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      display: grid; gap: .6rem .55rem; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+      grid-auto-rows: 1fr;
     }
+    .tiles > li[hidden] { display: none; }
     .tile {
-      display: flex; align-items: center; gap: .65rem; height: 100%;
-      padding: .55rem .7rem; text-decoration: none; color: var(--ink);
-      background: var(--card); border: 2px solid var(--accent); border-radius: 16px;
-      box-shadow: 0 4px 0 var(--accent); cursor: pointer;
+      display: flex; align-items: center; gap: .55rem; height: 100%;
+      padding: .45rem .55rem; text-decoration: none; color: var(--ink);
+      background: var(--card); border: 2px solid var(--accent); border-radius: 14px;
+      box-shadow: 0 3px 0 var(--accent); cursor: pointer;
       -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none;
       transition: transform .12s ease, box-shadow .12s ease;
     }
     .tile-icon {
-      flex: none; width: 2.6rem; height: 2.6rem; border-radius: 12px;
+      flex: none; width: 2.3rem; height: 2.3rem; border-radius: 11px;
       display: inline-flex; align-items: center; justify-content: center;
       background: var(--accent); color: #fff;
     }
     .tile-icon .icon-svg { width: 62%; height: 62%; }
     .tile-text { display: flex; flex-direction: column; min-width: 0; }
-    .tile-title { font-weight: 800; font-size: .95rem; line-height: 1.2; }
+    .tile-sub { font-size: .62rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); line-height: 1.2; }
+    .tile-title { font-weight: 800; font-size: .88rem; line-height: 1.15; }
     .tile-sum {
-      font-size: .78rem; line-height: 1.3; color: var(--muted);
+      font-size: .72rem; line-height: 1.25; color: var(--muted);
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
-    a.tile:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--accent); }
-    a.tile:active { transform: translateY(4px); box-shadow: 0 0 0 var(--accent); transition-duration: .04s; }
+    a.tile:hover { transform: translateY(-2px); box-shadow: 0 5px 0 var(--accent); }
+    a.tile:active { transform: translateY(3px); box-shadow: 0 0 0 var(--accent); transition-duration: .04s; }
     .tile.disabled { border-style: dashed; box-shadow: none; cursor: default; }
-    @media (max-width: 520px) { .tiles { grid-template-columns: 1fr; } }
+    @media (max-width: 520px) {
+      .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+      .tile { padding: .4rem .45rem; gap: .4rem; }
+      .tile-icon { width: 2rem; height: 2rem; border-radius: 9px; }
+      .tile-sum { display: none; }
+    }
+
+    /* ===== Page themes (subject colours never change) ===== */
+    :root[data-theme="sky"]    { --bg: #e8f4ff; --line: #c9def2; }
+    :root[data-theme="sunny"]  { --bg: #fff6cf; --line: #f0e1a1; }
+    :root[data-theme="candy"]  { --bg: #fff0f5; --line: #f6d3e0; }
+    :root[data-theme="mint"]   { --bg: #eafaf1; --line: #cfe9da; }
+    :root[data-theme="night"]  {
+      --bg: #101a33; --card: #1b2a4d; --ink: #eef2ff; --muted: #aab6d6; --line: #2b3d6b;
+      --brand: #8fb0ff; --focus: #8fb0ff; color-scheme: dark;
+    }
+    header.site, .back, .sound-toggle, .theme-cog, .chip { background: var(--card); }
+    .sound-toggle, .theme-cog { color: var(--ink); }
+    :root[data-theme="night"] .chip[aria-pressed="false"] { color: #fff; }
+    :root[data-theme="night"] .tile-sub { filter: brightness(1.4); }
+
+    /* Theme cog, next to the sound button */
+    .theme-cog {
+      position: absolute; top: 1rem; left: 4rem; z-index: 5;
+      width: 44px; height: 44px; padding: 0; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 2px solid var(--line); box-shadow: 0 3px 0 var(--line); cursor: pointer;
+      transition: transform .08s ease, box-shadow .08s ease;
+    }
+    .theme-cog:active { transform: translateY(3px); box-shadow: 0 0 0 var(--line); }
+    .theme-cog:focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; }
+    .theme-cog svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    body[data-page="category"] .theme-cog { left: auto; right: 4.1rem; top: .85rem; }
+    .theme-panel {
+      position: absolute; top: 4rem; left: 1rem; z-index: 6; width: min(300px, calc(100vw - 2rem));
+      background: var(--card); color: var(--ink); border: 2px solid var(--line); border-radius: 20px;
+      padding: .9rem; box-shadow: 0 12px 30px rgba(20, 33, 61, .2);
+    }
+    body[data-page="category"] .theme-panel { left: auto; right: 1rem; top: 3.9rem; }
+    .theme-panel[hidden] { display: none; }
+    .theme-panel h2 { font-size: 1rem; margin: 0 0 .6rem; }
+    .swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+    .swatch {
+      display: flex; flex-direction: column; align-items: center; gap: .25rem; padding: .5rem .2rem;
+      font: inherit; font-weight: 700; font-size: .78rem; color: var(--ink);
+      background: transparent; border: 2px solid var(--line); border-radius: 14px; cursor: pointer; min-height: 64px;
+    }
+    .swatch i { width: 28px; height: 28px; border-radius: 50%; border: 2px solid rgba(0, 0, 0, .15); display: block; }
+    .swatch[aria-pressed="true"] { border-color: var(--brand); box-shadow: 0 0 0 2px var(--brand); }
+    .swatch:focus-visible { outline: 4px solid var(--focus); outline-offset: 2px; }
 
     /* A subject with no platforms yet: not pressable */
     .category-card.disabled {
@@ -350,6 +416,13 @@
     <svg class="on" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M4 12h5l6-5v18l-6-5H4z"/><path d="M20 11.5c1.6 1.4 1.6 7.6 0 9M23.5 8c3.6 3.6 3.6 12.4 0 16"/></svg>
     <svg class="off" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M4 12h5l6-5v18l-6-5H4z"/><path d="M21 12l7 8M28 12l-7 8"/></svg>
   </button>
+  <button class="theme-cog" id="theme-cog" type="button" aria-label="Change the page colours" aria-expanded="false" aria-controls="theme-panel">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </button>
+  <div class="theme-panel" id="theme-panel" hidden>
+    <h2>Pick your colours</h2>
+    <div class="swatches" id="swatches"></div>
+  </div>
   <main id="main" tabindex="-1">
     <noscript><p class="lead">This site needs JavaScript to show the games.</p></noscript>
   </main>

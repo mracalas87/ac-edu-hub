@@ -80,14 +80,14 @@
   var homeFilter = "all"; // which subject the home page is showing
 
   function renderHome() {
-    // Every game on the home page: one coloured section per subject, small tiles inside
-    var grid = el("div", { class: "all-games" });
+    // Every game on the home page: one even grid of small tiles, coloured by subject
+    var tiles = [];
     window.CATEGORIES.forEach(function (cat) {
-      var games = gamesIn(cat.id);
-      var tiles = games.map(function (game) {
+      gamesIn(cat.id).forEach(function (game) {
         var parts = [
           el("span", { class: "tile-icon", "aria-hidden": "true" }, [iconSvg(ICONS[game.icon] ? game.icon : cat.icon)]),
           el("span", { class: "tile-text" }, [
+            el("span", { class: "tile-sub", text: cat.name }),
             el("span", { class: "tile-title", text: game.title }),
             el("span", { class: "tile-sum", text: game.summary })
           ])
@@ -98,29 +98,19 @@
               "aria-label": "Play " + game.title + ". Opens in a new tab."
             }, parts)
           : el("div", { class: "tile disabled" }, parts);
-        return el("li", {}, [tile]);
+        tiles.push(el("li", { "data-cat": cat.id, style: "--accent:" + cat.colour }, [tile]));
       });
-
-      var body = games.length
-        ? el("ul", { class: "tiles", role: "list" }, tiles)
-        : el("p", { class: "soon-note", text: "New games are coming soon." });
-
-      grid.appendChild(el("section", { class: "subject", style: "--accent:" + cat.colour, "aria-labelledby": "h-" + cat.id }, [
-        el("h2", { class: "subject-head", id: "h-" + cat.id }, [badge(cat.icon), document.createTextNode(" " + cat.name)]),
-        body
-      ]));
     });
+    var grid = el("ul", { class: "tiles", role: "list" }, tiles);
 
     // Filter buttons: All, or one subject at a time (only subjects that have games)
-    var sections = {};
-    Array.prototype.forEach.call(grid.children, function (sec, i) { sections[window.CATEGORIES[i].id] = sec; });
     var filterBar = el("div", { class: "filters", role: "group", "aria-label": "Show games from" });
     function applyFilter(id) {
       homeFilter = id;
       Array.prototype.forEach.call(filterBar.children, function (b) {
         b.setAttribute("aria-pressed", b.getAttribute("data-id") === id ? "true" : "false");
       });
-      window.CATEGORIES.forEach(function (c) { sections[c.id].hidden = id !== "all" && id !== c.id; });
+      tiles.forEach(function (li) { li.hidden = id !== "all" && li.getAttribute("data-cat") !== id; });
     }
     [{ id: "all", name: "All games", colour: "#14213d" }].concat(window.CATEGORIES.filter(function (c) {
       return gamesIn(c.id).length > 0;
@@ -287,6 +277,49 @@
       try { localStorage.setItem("ac-sound", soundOn ? "on" : "off"); } catch (e) {}
       showSound();
       if (soundOn) playClick();
+    });
+  }
+
+  // ---- Theme cog: pick the page colours (subject colours stay the same) ----
+  var THEMES = [
+    { id: "default", name: "Cream", swatch: "#fbf8f3" },
+    { id: "sky", name: "Sky", swatch: "#e8f4ff" },
+    { id: "sunny", name: "Sunny", swatch: "#fff6cf" },
+    { id: "candy", name: "Candy", swatch: "#fff0f5" },
+    { id: "mint", name: "Mint", swatch: "#eafaf1" },
+    { id: "night", name: "Night", swatch: "#101a33" }
+  ];
+  var themeCog = document.getElementById("theme-cog");
+  var themePanel = document.getElementById("theme-panel");
+  var swatchBox = document.getElementById("swatches");
+  function currentTheme() { return document.documentElement.getAttribute("data-theme") || "default"; }
+  function setTheme(id) {
+    document.documentElement.setAttribute("data-theme", id);
+    try { localStorage.setItem("ac-hub-theme", id); } catch (e) {}
+    Array.prototype.forEach.call(swatchBox.children, function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-id") === id ? "true" : "false");
+    });
+  }
+  function setThemePanel(open) {
+    themePanel.hidden = !open;
+    themeCog.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  if (themeCog && themePanel && swatchBox) {
+    THEMES.forEach(function (t) {
+      var b = el("button", { class: "swatch", type: "button", "data-id": t.id, "aria-pressed": "false" }, [
+        el("i", { style: "background:" + t.swatch, "aria-hidden": "true" }),
+        document.createTextNode(t.name)
+      ]);
+      b.addEventListener("click", function () { setTheme(t.id); });
+      swatchBox.appendChild(b);
+    });
+    setTheme(currentTheme());
+    themeCog.addEventListener("click", function () { setThemePanel(themePanel.hidden); });
+    document.addEventListener("click", function (e) {
+      if (!themePanel.hidden && !themePanel.contains(e.target) && !themeCog.contains(e.target)) setThemePanel(false);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !themePanel.hidden) { setThemePanel(false); themeCog.focus(); }
     });
   }
 
