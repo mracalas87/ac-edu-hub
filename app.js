@@ -126,7 +126,7 @@
     applyFilter(homeFilter);
 
     var hero = el("section", { class: "hero" }, [
-      el("img", { class: "hero-logo", src: "logo.png", alt: "", width: "120", height: "120" }),
+      el("img", { class: "hero-logo", src: "logo.svg", alt: "", width: "120", height: "120" }),
       el("h1", { id: "page-title", tabindex: "-1", class: "wordmark" }, [
         el("span", { class: "ac", text: "AC" }),
         document.createTextNode(" "),
