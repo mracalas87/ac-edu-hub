@@ -76,7 +76,7 @@ window.GAMES = [
   },
   {
     category: "stem",
-    title: "Mountain Makers",
+    title: "Mr Andy's Mountain Makers",
     icon: "mountain",
     summary: "Build a mountain landscape from blocks, then see it as a map.",
     url: "https://terrablocks.vercel.app/",
